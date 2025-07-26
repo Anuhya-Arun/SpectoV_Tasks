@@ -1,0 +1,49 @@
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+
+iris = load_iris()
+sample_data = iris.data
+sample_labels = iris.target
+
+pca_model = PCA(n_components=2)
+reduced_pca = pca_model.fit_transform(sample_data)
+
+tsne_30 = TSNE(n_components=2, perplexity=30, learning_rate=200, random_state=42)
+reduced_tsne_30 = tsne_30.fit_transform(sample_data)
+
+tsne_10 = TSNE(n_components=2, perplexity=10, learning_rate=200, random_state=42)
+reduced_tsne_10 = tsne_10.fit_transform(sample_data)
+
+tsne_lr_500 = TSNE(n_components=2, perplexity=30, learning_rate=500, random_state=42)
+reduced_tsne_lr_500 = tsne_lr_500.fit_transform(sample_data)
+
+plt.figure(figsize=(14, 10))
+
+plt.subplot(2, 2, 1)
+plt.scatter(reduced_pca[:, 0], reduced_pca[:, 1], c=sample_labels, cmap='viridis')
+plt.title("PCA (2D)")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+
+plt.subplot(2, 2, 2)
+plt.scatter(reduced_tsne_30[:, 0], reduced_tsne_30[:, 1], c=sample_labels, cmap='viridis')
+plt.title("t-SNE (Perplexity=30, LR=200)")
+plt.xlabel("Dim 1")
+plt.ylabel("Dim 2")
+
+plt.subplot(2, 2, 3)
+plt.scatter(reduced_tsne_10[:, 0], reduced_tsne_10[:, 1], c=sample_labels, cmap='viridis')
+plt.title("t-SNE (Perplexity=10, LR=200)")
+plt.xlabel("Dim 1")
+plt.ylabel("Dim 2")
+
+plt.subplot(2, 2, 4)
+plt.scatter(reduced_tsne_lr_500[:, 0], reduced_tsne_lr_500[:, 1], c=sample_labels, cmap='viridis')
+plt.title("t-SNE (Perplexity=30, LR=500)")
+plt.xlabel("Dim 1")
+plt.ylabel("Dim 2")
+
+plt.tight_layout()
+plt.show()
